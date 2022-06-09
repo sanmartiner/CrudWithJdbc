@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Class factory to connect the application with dataBase
+ * @author David
+ *
+ */
 public class ConnectionFactory {
 	/**
 	 * Configure USERNAME, PASSWORD and URL(With path, port and name of database).
