@@ -1,8 +1,11 @@
 package br.com.college.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -13,7 +16,7 @@ public class StudentDAO {
 
 	public void save(Student student) throws SQLException {
 
-		String sql = "INSERT INTO student(name, age, birthDate, address, phone, email) VALUES(?, ?, ?, ?, ?, ?) ";
+		String sql = "INSERT INTO students(name, age, birthDate, address, phone, email) VALUES(?, ?, ?, ?, ?, ?) ";
 
 		PreparedStatement pstm = null;
 		Connection conn = null;
@@ -21,19 +24,73 @@ public class StudentDAO {
 		try {
 			conn = ConnectionFactory.createConnectionToMySql();
 			pstm = (PreparedStatement) conn.prepareStatement(sql);
-			
+
 			pstm.setString(1, student.getName());
 			pstm.setInt(2, student.getAge());
-			pstm.setDate(3, (java.sql.Date) new Date(student.getBirthDate().getTime()));
+			pstm.setDate(3, new Date(student.getBirthDate().getTime()));
 			pstm.setString(4, student.getAddress());
-			pstm.setLong(5, student.getPhone());
+			pstm.setString(5, student.getPhone());
 			pstm.setString(6, student.getEmail());
-						
+
 			pstm.execute();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Student> getStudents(){
+
+		String sql = "SELECT * From college.students";
+
+		List<Student> students = new ArrayList<Student>();
+
+		Connection conn = null;
+		PreparedStatement pstm = null;
+		
+		//Recovery data on DataBase
+		ResultSet rset = null;
+		
+		try {
+			conn = ConnectionFactory.createConnectionToMySql();
+			pstm = (PreparedStatement) conn.prepareStatement(sql);
+			rset = pstm.executeQuery();
+			
+			while (rset.next()) {
+				
+			Student student = new Student();
+			
+			student.setId(rset.getInt(1));
+			student.setName(rset.getString(2));
+			student.setAge(rset.getInt(3));
+			student.setBirthDate(rset.getDate(4));
+			student.setAddress(rset.getString(5));
+			student.setPhone(rset.getString(6));
+			student.setEmail(rset.getString(7));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rset != null) {
+					rset.close();
+				}
+				
+				if(pstm != null) {
+					pstm.close();
+				}
+				
+				if(conn != null) {
+					conn.close();
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return students;
+
 	}
 
 }

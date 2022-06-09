@@ -9,7 +9,7 @@ public class Student {
 	private int age;
 	private Date birthDate;
 	private String address;
-	private Long phone;
+	private String phone;
 	private String email;
 	
 	
@@ -18,7 +18,7 @@ public class Student {
 	}
 
 
-	public Student(int id, String name, int age, Date birthDate, String address, Long phone, String email) {
+	public Student(int id, String name, int age, Date birthDate, String address, String phone, String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -80,12 +80,12 @@ public class Student {
 	}
 
 
-	public Long getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
 
-	public void setPhone(Long phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
