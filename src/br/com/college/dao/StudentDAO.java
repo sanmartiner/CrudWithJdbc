@@ -182,4 +182,35 @@ public class StudentDAO {
 
 	}
 
+	public void deleteById(int id) {
+
+		String sql = "DELETE FROM contatos WHERE id = ?";
+
+		Connection conn = null;
+
+		PreparedStatement pstm = null;
+
+		try {
+			conn = ConnectionFactory.createConnectionToMySql();
+
+			pstm = (PreparedStatement) conn.prepareCall(sql);
+			pstm.setInt(1, id);
+			pstm.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstm != null) {
+					pstm.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 }
